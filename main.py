@@ -8,8 +8,11 @@ data, label = utils.load_dataset()
 print(data.shape)
 data = np.reshape(data, (60000, 28, 28, 1))
 new_data = utils.load_image_jpg()
-new_data = [tf.convert_to_tensor(x, dtype=tf.float32) for x in new_data]
-print(new_data[0].shape)
+print(new_data)
+new_data = np.reshape(new_data, (1, 1024, 1024, 3))
+print("load")
+#new_data = [tf.convert_to_tensor(x, dtype=tf.float32) for x in new_data]
+print(new_data.shape)
 
 # Генерация случайных данных для обучения
 # data = np.random.rand(100, 28, 28, 1)

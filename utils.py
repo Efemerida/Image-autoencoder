@@ -1,6 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 import os
+import tensorflow as tf
 
 def load_dataset():
 	with np.load("mnist.npz") as f:
@@ -54,19 +56,34 @@ def load_image_jpg():
 	file_list = os.listdir(folder_path)
 
 	images = [file for file in file_list if file.endswith('.jpg')]
-	x_train = np.empty((len(images)), dtype=object)
+	x_train = []
 	i = 0
 	for im in images:
 		relative_path = os.path.relpath(os.path.join(folder_path, im))
 
 		image = Image.open(relative_path)
 
-		# Преобразование изображения в массив numpy
-		x_train[i] = np.array(image)
-		i+=1
-
+		print(i/len(images))
+		try:
+			standard_size = (1024, 1024)
+			st_img = tf.image.resize(image, standard_size)
+			# Преобразование изображения в массив numpy
+			arr = np.array(st_img)/255
+			print(arr.shape)
+			x_train.append(np.array(arr))
+			i+=1
+		except:
+			tensor_images = tf.convert_to_tensor(image, dtype=tf.float32)
+			tensor_images = tf.expand_dims(tensor_images, axis=-1)  # Добавляем измерение для каналов
+			tensor_images = tf.expand_dims(tensor_images, axis=0)
+			standard_size = (1024, 1024)
+			st_img = tf.image.resize(tensor_images, standard_size)
+			# Преобразование изображения в массив numpy
+			arr = np.array(st_img)/255
+			x_train[i] = np.array(arr)
+			i += 1
+		break
+	print(np.array(x_train).shape)
 	return x_train
 
-
-
-# load_image_jpg()
+load_image_jpg()
