@@ -1,4 +1,6 @@
 import numpy as np
+from PIL import Image
+import os
 
 def load_dataset():
 	with np.load("mnist.npz") as f:
@@ -43,3 +45,28 @@ def load_test_dataset():
 		y_test = np.eye(10)[y_test]
 
 		return x_test, y_test
+
+
+def load_image_jpg():
+
+	folder_path = 'images'
+
+	file_list = os.listdir(folder_path)
+
+	images = [file for file in file_list if file.endswith('.jpg')]
+	x_train = np.empty((len(images)), dtype=object)
+	i = 0
+	for im in images:
+		relative_path = os.path.relpath(os.path.join(folder_path, im))
+
+		image = Image.open(relative_path)
+
+		# Преобразование изображения в массив numpy
+		x_train[i] = np.array(image)
+		i+=1
+
+	return x_train
+
+
+
+# load_image_jpg()
