@@ -62,28 +62,27 @@ def load_image_jpg():
 		relative_path = os.path.relpath(os.path.join(folder_path, im))
 
 		image = Image.open(relative_path)
-
-		print(i/len(images))
+		a = i/len(images)
+		print(a)
 		try:
 			standard_size = (1024, 1024)
 			st_img = tf.image.resize(image, standard_size)
 			# Преобразование изображения в массив numpy
 			arr = np.array(st_img)/255
-			print(arr.shape)
 			x_train.append(np.array(arr))
 			i+=1
 		except:
-			tensor_images = tf.convert_to_tensor(image, dtype=tf.float32)
-			tensor_images = tf.expand_dims(tensor_images, axis=-1)  # Добавляем измерение для каналов
-			tensor_images = tf.expand_dims(tensor_images, axis=0)
-			standard_size = (1024, 1024)
-			st_img = tf.image.resize(tensor_images, standard_size)
-			# Преобразование изображения в массив numpy
-			arr = np.array(st_img)/255
-			x_train[i] = np.array(arr)
-			i += 1
-		break
-	print(np.array(x_train).shape)
-	return x_train
+			print('error')
+			# tensor_images = tf.convert_to_tensor(image, dtype=tf.float32)
+			# tensor_images = tf.expand_dims(tensor_images, axis=-1)  # Добавляем измерение для каналов
+			# tensor_images = tf.expand_dims(tensor_images, axis=0)
+			# standard_size = (1024, 1024)
+			# st_img = tf.image.resize(tensor_images, standard_size)
+			# # Преобразование изображения в массив numpy
+			# arr = np.array(st_img)/255
+			# x_train[i] = np.array(arr)
+			# i += 1
+		if a > 0.05: break
+	return np.array(x_train)
 
-load_image_jpg()
+# load_image_jpg()
